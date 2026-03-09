@@ -13,7 +13,68 @@ from PySide6.QtWidgets import QFrame, QHBoxLayout, QPushButton, QVBoxLayout, QLa
 from widgets.registry import registry
 from widgets.box_shadow import BoxShadowWrapper
 from styles.theme_manager import theme_manager, ACCENT_PURPLE, ACCENT_BLUE, ACCENT_TEAL, ACCENT_CORAL, ACCENT_PINK
-from styles.snippets import accent_dot, icon_circle, explore_link
+from styles.snippets import icon_circle, explore_link
+
+# ---------------------------------------------------------------------------
+# Accent colour dot (painted, immune to global QSS)
+# ---------------------------------------------------------------------------
+
+class _ColorDot(QtWidgets.QWidget):
+    """A small clickable coloured circle with optional selected ring."""
+    clicked = QtCore.Signal()
+
+    def __init__(self, color_hex: str, size: int = 28, parent=None):
+        super().__init__(parent)
+        self._color_hex = color_hex
+        self._color = QtGui.QColor(color_hex)
+        self._hovered = False
+        self._selected = False
+        self.setFixedSize(size, size)
+        self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_Hover, True)
+
+    def setSelected(self, selected: bool):
+        if self._selected != selected:
+            self._selected = selected
+            self.update()
+
+    def paintEvent(self, event):
+        p = QtGui.QPainter(self)
+        p.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+        if self._selected:
+            # Outer selection ring
+            ring = self.rect().adjusted(1, 1, -1, -1)
+            p.setPen(QtGui.QPen(self._color, 2.5))
+            p.setBrush(QtCore.Qt.BrushStyle.NoBrush)
+            p.drawEllipse(ring)
+            # Inner filled circle
+            inner = self.rect().adjusted(5, 5, -5, -5)
+            p.setPen(QtCore.Qt.PenStyle.NoPen)
+            p.setBrush(self._color)
+            p.drawEllipse(inner)
+        else:
+            r = self.rect().adjusted(3, 3, -3, -3)
+            p.setPen(QtCore.Qt.PenStyle.NoPen)
+            p.setBrush(self._color)
+            p.drawEllipse(r)
+        if self._hovered and not self._selected:
+            r = self.rect().adjusted(3, 3, -3, -3)
+            p.setPen(QtGui.QPen(QtGui.QColor("#FFFFFF"), 2))
+            p.setBrush(QtCore.Qt.BrushStyle.NoBrush)
+            p.drawEllipse(r)
+        p.end()
+
+    def enterEvent(self, event):
+        self._hovered = True
+        self.update()
+
+    def leaveEvent(self, event):
+        self._hovered = False
+        self.update()
+
+    def mouseReleaseEvent(self, event):
+        if self.rect().contains(event.position().toPoint()):
+            self.clicked.emit()
 
 # ---------------------------------------------------------------------------
 # Page transition helpers
@@ -316,15 +377,16 @@ def _build_home_page(main_window) -> QtWidgets.QWidget:
         ("Coral",   ACCENT_CORAL,   "#E64A19"),
         ("Pink",    ACCENT_PINK,    "#E91E63"),
     ]
+    accent_dots: list[_ColorDot] = []
+    current_accent = theme_manager.palette["accent"]
     for label_text, color_hex, _ in _ACCENT_PRESETS:
-        dot = QPushButton()
-        dot.setFixedSize(28, 28)
+        dot = _ColorDot(color_hex)
         dot.setToolTip(f"{label_text}  {color_hex}")
-        dot.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        dot.setStyleSheet(accent_dot(color_hex))
+        dot.setSelected(color_hex == current_accent)
         dot.clicked.connect(
-            lambda checked=False, c=color_hex, mw=main_window: _apply_accent(c, mw)
+            lambda c=color_hex, mw=main_window, dots=None: _apply_accent_and_select(c, mw, accent_dots)
         )
+        accent_dots.append(dot)
         accent_layout.addWidget(dot)
 
     accent_layout.addStretch()
@@ -408,6 +470,13 @@ def _make_card(demo, main_window) -> QtWidgets.QWidget:
     explore.setStyleSheet(explore_link())
     layout.addWidget(explore)
 
+    # Update icon and link colours when accent changes
+    def _on_theme_changed(_theme, iname=icon_name, iw=icon_widget, ex=explore):
+        accent = theme_manager.palette['accent']
+        iw.setPixmap(qta.icon(iname, color=accent).pixmap(36, 36))
+        ex.setStyleSheet(explore_link())
+    theme_manager.theme_changed.connect(_on_theme_changed)
+
     # Wrap in BoxShadowWrapper for neumorphic raised effect
     shadows = theme_manager.shadow_configs()
     wrapper = BoxShadowWrapper(
@@ -427,6 +496,13 @@ def _apply_accent(color_hex: str, main_window) -> None:
     theme_manager.set_accent(color_hex)
     theme_manager.apply()
     _refresh_nav_icons(main_window.ui, main_window.ui._current_demo_id)
+
+
+def _apply_accent_and_select(color_hex: str, main_window, dots: list[_ColorDot]) -> None:
+    """Apply accent and update dot selection state."""
+    _apply_accent(color_hex, main_window)
+    for d in dots:
+        d.setSelected(d._color_hex == color_hex)
 
 
 def _build_about_home_page() -> QtWidgets.QWidget:

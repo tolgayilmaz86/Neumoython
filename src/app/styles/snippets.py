@@ -151,8 +151,10 @@ def accent_dot(color_hex: str, size: int = 28) -> str:
     """QSS for a small circular accent colour dot button."""
     r = size // 2
     return (
-        f"QPushButton {{ background: {color_hex}; border-radius: {r}px; border: none; }}"
-        f"QPushButton:hover {{ border: 2px solid #FFFFFF; }}"
+        f"background: {color_hex}; border-radius: {r}px;"
+        f" border: none; padding: 0px;"
+        f" min-width: {size}px; max-width: {size}px;"
+        f" min-height: {size}px; max-height: {size}px;"
     )
 
 
