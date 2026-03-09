@@ -1055,6 +1055,10 @@ QDateEdit::down-arrow, QTimeEdit::down-arrow, QDateTimeEdit::down-arrow {{
 }}
 
 /* --- Sliders --- */
+QSlider {{
+    background: transparent;
+}}
+
 QSlider::groove:horizontal {{
     height: 6px;
     background: {p['bg_secondary']};
@@ -1071,6 +1075,126 @@ QSlider::handle:horizontal {{
 QSlider::sub-page:horizontal {{
     background: {p['accent']};
     border-radius: 3px;
+}}
+
+QSlider::add-page:horizontal {{
+    background: {p['bg_secondary']};
+    border-radius: 3px;
+}}
+
+QSlider::groove:vertical {{
+    width: 6px;
+    background: {p['bg_secondary']};
+    border-radius: 3px;
+}}
+
+QSlider::handle:vertical {{
+    background: {p['accent']};
+    height: 18px;
+    margin: 0 -6px;
+    border-radius: 9px;
+}}
+
+QSlider::sub-page:vertical {{
+    background: {p['bg_secondary']};
+    border-radius: 3px;
+}}
+
+QSlider::add-page:vertical {{
+    background: {p['accent']};
+    border-radius: 3px;
+}}
+
+QSlider:disabled::groove:horizontal {{
+    background: {p['bg_secondary']};
+}}
+
+QSlider:disabled::handle:horizontal {{
+    background: {p['text_muted']};
+}}
+
+QSlider:disabled::sub-page:horizontal {{
+    background: {p['text_muted']};
+}}
+
+QSlider:disabled::groove:vertical {{
+    background: {p['bg_secondary']};
+}}
+
+QSlider:disabled::handle:vertical {{
+    background: {p['text_muted']};
+}}
+
+QSlider:disabled::add-page:vertical {{
+    background: {p['text_muted']};
+}}
+
+/* --- Outset slider (neumorphic raised groove) --- */
+QSlider[sliderVariant="outset"]::groove:horizontal {{
+    height: 8px;
+    background: {p['bg_secondary']};
+    border-radius: 4px;
+    border: 1px solid {p['shadow_dark']};
+}}
+
+QSlider[sliderVariant="outset"]::handle:horizontal {{
+    background: {p['accent']};
+    width: 22px;
+    margin: -8px 0;
+    border-radius: 11px;
+    border: 2px solid {p['shadow_light']};
+}}
+
+QSlider[sliderVariant="outset"]::sub-page:horizontal {{
+    background: {p['accent']};
+    border-radius: 4px;
+}}
+
+QSlider[sliderVariant="outset"]::add-page:horizontal {{
+    background: {p['bg_secondary']};
+    border-radius: 4px;
+}}
+
+QSlider[sliderVariant="outset"]::groove:vertical {{
+    width: 8px;
+    background: {p['bg_secondary']};
+    border-radius: 4px;
+    border: 1px solid {p['shadow_dark']};
+}}
+
+QSlider[sliderVariant="outset"]::handle:vertical {{
+    background: {p['accent']};
+    height: 22px;
+    margin: 0 -8px;
+    border-radius: 11px;
+    border: 2px solid {p['shadow_light']};
+}}
+
+QSlider[sliderVariant="outset"]::sub-page:vertical {{
+    background: {p['bg_secondary']};
+    border-radius: 4px;
+}}
+
+QSlider[sliderVariant="outset"]::add-page:vertical {{
+    background: {p['accent']};
+    border-radius: 4px;
+}}
+
+/* --- Accent-light slider variant --- */
+QSlider[sliderVariant="accent-light"]::handle:horizontal {{
+    background: {p['accent_hover']};
+}}
+
+QSlider[sliderVariant="accent-light"]::sub-page:horizontal {{
+    background: {p['accent_hover']};
+}}
+
+QSlider[sliderVariant="accent-light"]::handle:vertical {{
+    background: {p['accent_hover']};
+}}
+
+QSlider[sliderVariant="accent-light"]::add-page:vertical {{
+    background: {p['accent_hover']};
 }}
 
 /* --- Dial --- */
@@ -1385,6 +1509,53 @@ QSlider::sub-page:vertical {{
 QSlider::add-page:vertical {{
     background: {p['accent']};
     border-radius: 3px;
+}}
+
+QSlider:disabled::groove:vertical {{
+    background: {p['bg_secondary']};
+}}
+
+QSlider:disabled::handle:vertical {{
+    background: {p['text_muted']};
+}}
+
+QSlider:disabled::add-page:vertical {{
+    background: {p['text_muted']};
+}}
+
+/* --- Outset vertical slider --- */
+QSlider[sliderVariant="outset"]::groove:vertical {{
+    width: 8px;
+    background: {p['bg_secondary']};
+    border-radius: 4px;
+    border: 1px solid {p['shadow_dark']};
+}}
+
+QSlider[sliderVariant="outset"]::handle:vertical {{
+    background: {p['accent']};
+    height: 22px;
+    margin: 0 -8px;
+    border-radius: 11px;
+    border: 2px solid {p['shadow_light']};
+}}
+
+QSlider[sliderVariant="outset"]::sub-page:vertical {{
+    background: {p['bg_secondary']};
+    border-radius: 4px;
+}}
+
+QSlider[sliderVariant="outset"]::add-page:vertical {{
+    background: {p['accent']};
+    border-radius: 4px;
+}}
+
+/* --- Accent-light vertical slider variant --- */
+QSlider[sliderVariant="accent-light"]::handle:vertical {{
+    background: {p['accent_hover']};
+}}
+
+QSlider[sliderVariant="accent-light"]::add-page:vertical {{
+    background: {p['accent_hover']};
 }}
 
 /* --- Tooltip --- */
