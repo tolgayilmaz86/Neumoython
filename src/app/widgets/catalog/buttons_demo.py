@@ -1,4 +1,7 @@
-"""Buttons demo – push buttons, tool buttons, and checkable buttons."""
+"""Buttons demo – matching Neumorphism.Avalonia button showcase.
+
+Sections: Regular, Outline, Icon, Floating (FAB), Extended FAB, Custom.
+"""
 
 import qtawesome as qta
 from PySide6 import QtCore, QtWidgets
@@ -30,8 +33,30 @@ def _neu_button(btn: QtWidgets.QPushButton) -> BoxShadowWrapper:
     )
 
 
+def _neu_fab(btn: QtWidgets.QPushButton) -> BoxShadowWrapper:
+    """Wrap a FAB in a bigger neumorphic raised shadow."""
+    shadows = theme_manager.shadow_configs()
+    return BoxShadowWrapper(
+        btn,
+        shadow_list=shadows["outside_raised"],
+        smooth=True,
+        margins=(10, 10, 10, 10),
+    )
+
+
+def _section_label(text: str) -> QtWidgets.QLabel:
+    p = theme_manager.palette
+    lbl = QtWidgets.QLabel(text)
+    lbl.setStyleSheet(
+        f"color: {p['text_muted']}; font-size: 14px; font-weight: 600; "
+        "background: transparent; margin-top: 8px;"
+    )
+    return lbl
+
+
 def create_page() -> QtWidgets.QWidget:
     """Create and return the demo page widget."""
+    p = theme_manager.palette
     page = QtWidgets.QWidget()
     scroll = QtWidgets.QScrollArea()
     scroll.setWidgetResizable(True)
@@ -49,82 +74,227 @@ def create_page() -> QtWidgets.QWidget:
     title.setFont(font)
     layout.addWidget(title)
 
-    desc = QtWidgets.QLabel("Various button styles and states with neumorphic shadows.")
+    desc = QtWidgets.QLabel(
+        "Neumorphic button variants: regular, outline, icon, "
+        "floating action buttons (FAB), extended FAB, and custom."
+    )
     desc.setWordWrap(True)
     desc.setProperty("subheading", True)
     layout.addWidget(desc)
 
-    # --- Push buttons (raised neumorphic) ---
-    group1 = QtWidgets.QGroupBox("Push Buttons")
-    g1_layout = QtWidgets.QHBoxLayout(group1)
-    g1_layout.setSpacing(16)
-    g1_layout.setContentsMargins(16, 24, 16, 16)
+    # ── 1. Regular buttons ────────────────────────────────────────────────
+    layout.addWidget(_section_label("Regular buttons"))
+    group1 = QtWidgets.QGroupBox("Regular Buttons")
+    g1 = QtWidgets.QHBoxLayout(group1)
+    g1.setSpacing(14)
+    g1.setContentsMargins(16, 24, 16, 16)
 
     btn_default = QtWidgets.QPushButton("Default")
-    btn_flat = QtWidgets.QPushButton("Flat")
-    btn_flat.setFlat(True)
-    btn_disabled = QtWidgets.QPushButton("Disabled")
-    btn_disabled.setEnabled(False)
-    btn_icon = QtWidgets.QPushButton("With Icon")
-    btn_icon.setIcon(qta.icon("mdi6.check", color=theme_manager.palette['text']))
+    btn_default.setToolTip("Regular button with default theme")
+
+    btn_icon_heart = QtWidgets.QPushButton()
+    btn_icon_heart.setIcon(qta.icon("mdi6.heart", color="red"))
+    btn_icon_heart.setIconSize(QtCore.QSize(24, 24))
+    btn_icon_heart.setToolTip("Regular button with icon")
+
+    btn_light = QtWidgets.QPushButton("Light")
+    btn_light.setProperty("buttonVariant", "light")
+    btn_light.setToolTip('Regular button class "Light"')
+
+    btn_dark = QtWidgets.QPushButton("Dark")
+    btn_dark.setProperty("buttonVariant", "dark")
+    btn_dark.setToolTip('Regular button class "Dark"')
 
     btn_accent = QtWidgets.QPushButton("Accent")
     btn_accent.setProperty("accentButton", True)
+    btn_accent.setToolTip('Regular button class "Accent"')
 
-    # Wrap individual buttons in neumorphic shadows
-    for btn in (btn_default, btn_icon, btn_accent):
-        g1_layout.addWidget(_neu_button(btn))
-    # Flat and disabled stay unwrapped (flat = no shadow, disabled = subdued)
-    g1_layout.addWidget(btn_flat)
-    g1_layout.addWidget(btn_disabled)
+    btn_gradient = QtWidgets.QPushButton("Gradient")
+    btn_gradient.setProperty("buttonVariant", "gradient")
+    btn_gradient.setToolTip('Regular button class "Gradient"')
+
+    btn_disabled = QtWidgets.QPushButton("Disabled")
+    btn_disabled.setEnabled(False)
+    btn_disabled.setToolTip("Disabled regular button")
+
+    for btn in (btn_default, btn_icon_heart, btn_light, btn_dark,
+                btn_accent, btn_gradient):
+        g1.addWidget(_neu_button(btn))
+    g1.addWidget(btn_disabled)
 
     layout.addWidget(_neu_group(group1))
 
-    # --- Tool buttons ---
-    group2 = QtWidgets.QGroupBox("Tool Buttons")
-    g2_layout = QtWidgets.QHBoxLayout(group2)
-    g2_layout.setSpacing(16)
-    g2_layout.setContentsMargins(16, 24, 16, 16)
+    # ── 2. Outline buttons ───────────────────────────────────────────────
+    layout.addWidget(_section_label("Outline buttons"))
+    group2 = QtWidgets.QGroupBox("Outline Buttons")
+    g2 = QtWidgets.QHBoxLayout(group2)
+    g2.setSpacing(14)
+    g2.setContentsMargins(16, 24, 16, 16)
 
-    for style_name, style, icon_name in [
-        ("Icon Only", QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly, "mdi6.file-outline"),
-        ("Text Only", QtCore.Qt.ToolButtonStyle.ToolButtonTextOnly, "mdi6.file-outline"),
-        ("Text Beside", QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon, "mdi6.folder-outline"),
-        ("Text Under", QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon, "mdi6.star-outline"),
-    ]:
-        tb = QtWidgets.QToolButton()
-        tb.setText(style_name)
-        tb.setIcon(qta.icon(icon_name, color=theme_manager.palette['text']))
-        tb.setToolButtonStyle(style)
-        g2_layout.addWidget(_neu_button(tb))
+    outline_default = QtWidgets.QPushButton("Default")
+    outline_default.setProperty("buttonVariant", "outline")
+
+    outline_heart = QtWidgets.QPushButton()
+    outline_heart.setProperty("buttonVariant", "outline")
+    outline_heart.setIcon(qta.icon("mdi6.heart", color="red"))
+    outline_heart.setIconSize(QtCore.QSize(24, 24))
+
+    outline_light = QtWidgets.QPushButton("Light")
+    outline_light.setProperty("buttonVariant", "outline-light")
+
+    outline_dark = QtWidgets.QPushButton("Dark")
+    outline_dark.setProperty("buttonVariant", "outline-dark")
+
+    outline_accent = QtWidgets.QPushButton("Accent")
+    outline_accent.setProperty("buttonVariant", "outline-accent")
+
+    outline_disabled = QtWidgets.QPushButton("Disabled")
+    outline_disabled.setProperty("buttonVariant", "outline")
+    outline_disabled.setEnabled(False)
+
+    for btn in (outline_default, outline_heart, outline_light,
+                outline_dark, outline_accent):
+        g2.addWidget(_neu_button(btn))
+    g2.addWidget(outline_disabled)
 
     layout.addWidget(_neu_group(group2))
 
-    # --- Checkable push buttons ---
-    group3 = QtWidgets.QGroupBox("Checkable Push Buttons")
-    g3_layout = QtWidgets.QHBoxLayout(group3)
-    g3_layout.setSpacing(16)
-    g3_layout.setContentsMargins(16, 24, 16, 16)
+    # ── 3. Icon buttons ──────────────────────────────────────────────────
+    layout.addWidget(_section_label("Icon buttons"))
+    group3 = QtWidgets.QGroupBox("Icon Buttons")
+    g3 = QtWidgets.QHBoxLayout(group3)
+    g3.setSpacing(14)
+    g3.setContentsMargins(16, 24, 16, 16)
 
-    btn_check = QtWidgets.QPushButton("Toggle Me")
-    btn_check.setCheckable(True)
-    btn_check2 = QtWidgets.QPushButton("Toggle B")
-    btn_check2.setCheckable(True)
-    btn_check2.setChecked(True)
-    btn_check_d = QtWidgets.QPushButton("Disabled")
-    btn_check_d.setCheckable(True)
-    btn_check_d.setEnabled(False)
+    icon_heart = QtWidgets.QPushButton()
+    icon_heart.setProperty("buttonVariant", "icon")
+    icon_heart.setIcon(qta.icon("mdi6.heart", color="red"))
+    icon_heart.setIconSize(QtCore.QSize(22, 22))
+    icon_heart.setToolTip("Icon button")
 
-    for btn in (btn_check, btn_check2, btn_check_d):
-        g3_layout.addWidget(_neu_button(btn))
+    icon_light = QtWidgets.QPushButton()
+    icon_light.setProperty("buttonVariant", "icon-light")
+    icon_light.setIcon(qta.icon("mdi6.close", color=p['text']))
+    icon_light.setIconSize(QtCore.QSize(22, 22))
+    icon_light.setToolTip('Icon button "Light"')
+
+    icon_dark = QtWidgets.QPushButton()
+    icon_dark.setProperty("buttonVariant", "icon-dark")
+    icon_dark.setIcon(qta.icon("mdi6.close", color="#FFFFFF"))
+    icon_dark.setIconSize(QtCore.QSize(22, 22))
+    icon_dark.setToolTip('Icon button "Dark"')
+
+    icon_accent = QtWidgets.QPushButton()
+    icon_accent.setProperty("buttonVariant", "icon-accent")
+    icon_accent.setIcon(qta.icon("mdi6.close", color="#FFFFFF"))
+    icon_accent.setIconSize(QtCore.QSize(22, 22))
+    icon_accent.setToolTip('Icon button "Accent"')
+
+    for btn in (icon_heart, icon_light, icon_dark, icon_accent):
+        g3.addWidget(_neu_button(btn))
+    g3.addStretch()
 
     layout.addWidget(_neu_group(group3))
 
-    # --- Click counter ---
-    group4 = QtWidgets.QGroupBox("Interactive")
-    g4_layout = QtWidgets.QHBoxLayout(group4)
-    g4_layout.setSpacing(16)
-    g4_layout.setContentsMargins(16, 24, 16, 16)
+    # ── 4. Floating buttons with icon (FAB) ──────────────────────────────
+    layout.addWidget(_section_label("Floating buttons with icon"))
+    group4 = QtWidgets.QGroupBox("Floating Action Buttons")
+    g4 = QtWidgets.QHBoxLayout(group4)
+    g4.setSpacing(14)
+    g4.setContentsMargins(16, 24, 16, 16)
+
+    fab_specs = [
+        ("fab",              "mdi6.plus",      p['text'],   "Default FAB"),
+        ("fab-mini",         "mdi6.cog",       p['text'],   "Mini FAB"),
+        ("fab-light-mini",   "mdi6.bell",      "#FFFFFF",   "Light Mini FAB"),
+        ("fab-light",        "mdi6.speaker",   "#FFFFFF",   "Light FAB"),
+        ("fab-dark-mini",    "mdi6.thumb-up",  "#FFFFFF",   "Dark Mini FAB"),
+        ("fab-dark",         "mdi6.heart",     "#FFFFFF",   "Dark FAB"),
+        ("fab-accent-mini",  "mdi6.heart",     "#FFFFFF",   "Accent Mini FAB"),
+        ("fab-accent",       "mdi6.heart",     "#FFFFFF",   "Accent FAB"),
+    ]
+    for variant, icon_name, icon_color, tip in fab_specs:
+        btn = QtWidgets.QPushButton()
+        btn.setProperty("buttonVariant", variant)
+        btn.setIcon(qta.icon(icon_name, color=icon_color))
+        btn.setIconSize(QtCore.QSize(22, 22))
+        btn.setToolTip(tip)
+        g4.addWidget(_neu_fab(btn))
+
+    fab_disabled = QtWidgets.QPushButton()
+    fab_disabled.setProperty("buttonVariant", "fab-accent")
+    fab_disabled.setIcon(qta.icon("mdi6.heart", color="#FFFFFF"))
+    fab_disabled.setIconSize(QtCore.QSize(24, 24))
+    fab_disabled.setEnabled(False)
+    fab_disabled.setToolTip("Disabled Accent FAB")
+    g4.addWidget(fab_disabled)
+
+    layout.addWidget(_neu_group(group4))
+
+    # ── 5. Extended floating buttons ─────────────────────────────────────
+    layout.addWidget(_section_label("Extended floating buttons"))
+    group5 = QtWidgets.QGroupBox("Extended FAB")
+    g5 = QtWidgets.QHBoxLayout(group5)
+    g5.setSpacing(14)
+    g5.setContentsMargins(16, 24, 16, 16)
+
+    ext_specs = [
+        ("fab-extended",        p['text'],   "Default"),
+        ("fab-extended-light",  p['text'],   "Light"),
+        ("fab-extended-dark",   "#FFFFFF",   "Dark"),
+        ("fab-extended-accent", "#FFFFFF",   "Accent"),
+    ]
+    for variant, icon_col, label_text in ext_specs:
+        btn = QtWidgets.QPushButton(f"  {label_text}")
+        btn.setProperty("buttonVariant", variant)
+        btn.setIcon(qta.icon("mdi6.plus", color=icon_col))
+        btn.setIconSize(QtCore.QSize(20, 20))
+        g5.addWidget(_neu_fab(btn))
+
+    g5.addStretch()
+    layout.addWidget(_neu_group(group5))
+
+    # ── 6. Custom buttons ────────────────────────────────────────────────
+    layout.addWidget(_section_label("Custom buttons"))
+    group6 = QtWidgets.QGroupBox("Custom Buttons")
+    g6 = QtWidgets.QHBoxLayout(group6)
+    g6.setSpacing(14)
+    g6.setContentsMargins(16, 24, 16, 16)
+
+    custom1 = QtWidgets.QPushButton("Custom")
+    custom1.setProperty("buttonVariant", "custom-gradient")
+    custom1.setToolTip("Custom button with gradient background")
+    custom1.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+
+    custom2 = QtWidgets.QPushButton("Custom\noutline")
+    custom2.setProperty("buttonVariant", "custom-outline-gradient")
+    custom2.setToolTip("Custom outline button with gradient background")
+    custom2.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+
+    custom_fab = QtWidgets.QPushButton()
+    custom_fab.setProperty("buttonVariant", "fab")
+    custom_fab.setIcon(qta.icon("mdi6.plus", color="#FFFFFF"))
+    custom_fab.setIconSize(QtCore.QSize(22, 22))
+    custom_fab.setToolTip("Custom floating button")
+    custom_fab.setStyleSheet(
+        f"background: SteelBlue; border: 3px solid white; "
+        f"border-radius: 28px; min-width:56px; max-width:56px; "
+        f"min-height:56px; max-height:56px; padding:0px;"
+    )
+
+    for btn in (custom1, custom2):
+        g6.addWidget(_neu_button(btn))
+    g6.addWidget(_neu_fab(custom_fab))
+    g6.addStretch()
+
+    layout.addWidget(_neu_group(group6))
+
+    # ── 7. Interactive click counter ─────────────────────────────────────
+    layout.addWidget(_section_label("Interactive"))
+    group7 = QtWidgets.QGroupBox("Click Counter")
+    g7 = QtWidgets.QHBoxLayout(group7)
+    g7.setSpacing(16)
+    g7.setContentsMargins(16, 24, 16, 16)
 
     counter_label = QtWidgets.QLabel("Clicks: 0")
     clicks = [0]
@@ -135,12 +305,11 @@ def create_page() -> QtWidgets.QWidget:
 
     btn_count = QtWidgets.QPushButton("Click Counter")
     btn_count.clicked.connect(on_click)
+    g7.addWidget(_neu_button(btn_count))
+    g7.addWidget(counter_label)
+    g7.addStretch()
 
-    g4_layout.addWidget(_neu_button(btn_count))
-    g4_layout.addWidget(counter_label)
-    g4_layout.addStretch()
-
-    layout.addWidget(_neu_group(group4))
+    layout.addWidget(_neu_group(group7))
 
     layout.addStretch()
     scroll.setWidget(inner)
@@ -165,9 +334,15 @@ def create_about() -> QtWidgets.QWidget:
     layout.addWidget(title)
 
     info = QtWidgets.QLabel(
-        "Standard Qt button widgets:\n"
-        "  QPushButton, QToolButton, QRadioButton, QCheckBox.\n\n"
-        "Demonstrates different styles, states, and click handling."
+        "Neumorphic button variants matching the Neumorphism.Avalonia showcase:\n\n"
+        "  • Regular – Default, Light, Dark, Accent, Gradient, Disabled\n"
+        "  • Outline – Default, Light, Dark, Accent, Disabled\n"
+        "  • Icon    – circular icon-only buttons in 4 colour variants\n"
+        "  • FAB     – Floating Action Buttons in standard and mini sizes\n"
+        "  • Extended FAB – FAB with icon + label text\n"
+        "  • Custom  – gradient, outline-gradient, custom-styled FAB\n\n"
+        "Each variant is driven by the 'buttonVariant' dynamic property and "
+        "styled via the global neumorphic QSS theme."
     )
     info.setWordWrap(True)
     layout.addWidget(info)
@@ -180,5 +355,5 @@ registry.register(WidgetDemo(
     name="Buttons",
     create_page=create_page,
     create_about=create_about,
-    description="Push buttons, tool buttons, radio buttons, and checkboxes.",
+    description="Regular, outline, icon, FAB, extended FAB, and custom buttons.",
 ))

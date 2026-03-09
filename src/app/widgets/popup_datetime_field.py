@@ -202,15 +202,26 @@ class PopupDateTimeField(QtWidgets.QWidget):
         self._edit.setStyleSheet(
             f"""
             QLineEdit {{
-                background: {p['input_bg']};
+                background: qlineargradient(
+                    x1:0, y1:0, x2:1, y2:1,
+                    stop:0 {p['bg_secondary']},
+                    stop:1 {p['input_bg']}
+                );
                 color: {p['text']};
                 border: 1px solid {p['bg_secondary']};
+                border-top-color: {p['bg_secondary']};
+                border-left-color: {p['bg_secondary']};
+                border-right-color: {p['menu_hover']};
+                border-bottom-color: {p['menu_hover']};
                 border-radius: 10px;
                 padding: 8px 10px;
                 min-height: 34px;
             }}
             QLineEdit:hover {{
-                border: 1px solid {p['accent']};
+                border-top-color: {p['menu_hover']};
+                border-left-color: {p['menu_hover']};
+                border-right-color: {p['bg_secondary']};
+                border-bottom-color: {p['bg_secondary']};
             }}
             """
         )
@@ -223,15 +234,30 @@ class PopupDateTimeField(QtWidgets.QWidget):
         self._button.setStyleSheet(
             f"""
             QToolButton {{
-                background: {p['input_bg']};
+                background: qlineargradient(
+                    x1:0, y1:0, x2:1, y2:1,
+                    stop:0 {p['bg_secondary']},
+                    stop:1 {p['input_bg']}
+                );
                 border: 1px solid {p['bg_secondary']};
+                border-top-color: {p['bg_secondary']};
+                border-left-color: {p['bg_secondary']};
+                border-right-color: {p['menu_hover']};
+                border-bottom-color: {p['menu_hover']};
                 border-radius: 10px;
                 min-width: 36px;
                 min-height: 34px;
             }}
             QToolButton:hover {{
-                border: 1px solid {p['accent']};
-                background: {p['menu_hover']};
+                background: qlineargradient(
+                    x1:0, y1:0, x2:1, y2:1,
+                    stop:0 {p['input_bg']},
+                    stop:1 {p['menu_hover']}
+                );
+                border-top-color: {p['menu_hover']};
+                border-left-color: {p['menu_hover']};
+                border-right-color: {p['bg_secondary']};
+                border-bottom-color: {p['bg_secondary']};
             }}
             """
         )

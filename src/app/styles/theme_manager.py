@@ -67,6 +67,8 @@ _PALETTES: dict[str, dict] = {
         "input_bg":       "#E0E5EC",
         "shadow_dark":    "rgba(0,0,0,51)",
         "shadow_light":   "rgba(255,255,255,204)",
+        "button_light":   "#EDF2F9",
+        "button_dark":    "#5C5E62",
     },
     "dark": {
         "bg":             "#2C3135",
@@ -86,6 +88,8 @@ _PALETTES: dict[str, dict] = {
         "input_bg":       "#2C3135",
         "shadow_dark":    "rgba(0,0,0,136)",
         "shadow_light":   "rgba(255,255,255,34)",
+        "button_light":   "#3A3F44",
+        "button_dark":    "#1A1D20",
     },
 }
 
@@ -464,6 +468,384 @@ QPushButton[accentButton="true"]:pressed {{
     padding: 11px 24px 9px 24px;
 }}
 
+/* --- Light button variant --- */
+QPushButton[buttonVariant="light"] {{
+    background: {p['button_light']};
+    color: {p['text']};
+    border: none;
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 13px;
+}}
+QPushButton[buttonVariant="light"]:hover {{
+    background: {p['menu_hover']};
+}}
+QPushButton[buttonVariant="light"]:pressed {{
+    background: {p['bg_secondary']};
+    padding: 11px 24px 9px 24px;
+}}
+
+/* --- Dark button variant --- */
+QPushButton[buttonVariant="dark"] {{
+    background: {p['button_dark']};
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 13px;
+}}
+QPushButton[buttonVariant="dark"]:hover {{
+    opacity: 0.85;
+}}
+QPushButton[buttonVariant="dark"]:pressed {{
+    padding: 11px 24px 9px 24px;
+}}
+
+/* --- Gradient button variant --- */
+QPushButton[buttonVariant="gradient"] {{
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 {p['accent']},
+        stop:1 {p['accent_hover']}
+    );
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 13px;
+}}
+QPushButton[buttonVariant="gradient"]:hover {{
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:0,
+        stop:0 {p['accent_hover']},
+        stop:1 {p['accent']}
+    );
+}}
+QPushButton[buttonVariant="gradient"]:pressed {{
+    padding: 11px 24px 9px 24px;
+}}
+
+/* --- Outline button variant --- */
+QPushButton[buttonVariant="outline"] {{
+    background: transparent;
+    color: {p['text']};
+    border: 2px solid {p['text_muted']};
+    border-radius: 12px;
+    padding: 8px 22px;
+    font-weight: 600;
+    font-size: 13px;
+}}
+QPushButton[buttonVariant="outline"]:hover {{
+    background: {p['menu_hover']};
+    border-color: {p['text']};
+}}
+QPushButton[buttonVariant="outline"]:pressed {{
+    background: {p['bg_secondary']};
+    padding: 9px 22px 7px 22px;
+}}
+QPushButton[buttonVariant="outline"]:disabled {{
+    color: {p['text_muted']};
+    border-color: {p['bg_secondary']};
+    background: transparent;
+}}
+
+/* --- Outline Light --- */
+QPushButton[buttonVariant="outline-light"] {{
+    background: transparent;
+    color: {p['text']};
+    border: 2px solid {p['button_light']};
+    border-radius: 12px;
+    padding: 8px 22px;
+    font-weight: 600;
+    font-size: 13px;
+}}
+QPushButton[buttonVariant="outline-light"]:hover {{
+    background: {p['button_light']};
+}}
+
+/* --- Outline Dark --- */
+QPushButton[buttonVariant="outline-dark"] {{
+    background: transparent;
+    color: {p['text']};
+    border: 2px solid {p['button_dark']};
+    border-radius: 12px;
+    padding: 8px 22px;
+    font-weight: 600;
+    font-size: 13px;
+}}
+QPushButton[buttonVariant="outline-dark"]:hover {{
+    background: {p['button_dark']};
+    color: #FFFFFF;
+}}
+
+/* --- Outline Accent --- */
+QPushButton[buttonVariant="outline-accent"] {{
+    background: transparent;
+    color: {p['accent']};
+    border: 2px solid {p['accent']};
+    border-radius: 12px;
+    padding: 8px 22px;
+    font-weight: 600;
+    font-size: 13px;
+}}
+QPushButton[buttonVariant="outline-accent"]:hover {{
+    background: {p['accent']};
+    color: #FFFFFF;
+}}
+
+/* --- Icon button (circular, no text) --- */
+QPushButton[buttonVariant="icon"] {{
+    background: transparent;
+    border: none;
+    border-radius: 20px;
+    padding: 8px;
+    min-width: 40px;
+    max-width: 40px;
+    min-height: 40px;
+    max-height: 40px;
+}}
+QPushButton[buttonVariant="icon"]:hover {{
+    background: {p['menu_hover']};
+}}
+QPushButton[buttonVariant="icon"]:pressed {{
+    background: {p['bg_secondary']};
+}}
+
+/* --- Icon Light --- */
+QPushButton[buttonVariant="icon-light"] {{
+    background: {p['button_light']};
+    border: none;
+    border-radius: 20px;
+    padding: 8px;
+    min-width: 40px; max-width: 40px;
+    min-height: 40px; max-height: 40px;
+}}
+QPushButton[buttonVariant="icon-light"]:hover {{
+    background: {p['menu_hover']};
+}}
+
+/* --- Icon Dark --- */
+QPushButton[buttonVariant="icon-dark"] {{
+    background: {p['button_dark']};
+    border: none;
+    border-radius: 20px;
+    padding: 8px;
+    min-width: 40px; max-width: 40px;
+    min-height: 40px; max-height: 40px;
+}}
+QPushButton[buttonVariant="icon-dark"]:hover {{
+    opacity: 0.85;
+}}
+
+/* --- Icon Accent --- */
+QPushButton[buttonVariant="icon-accent"] {{
+    background: {p['accent']};
+    border: none;
+    border-radius: 20px;
+    padding: 8px;
+    min-width: 40px; max-width: 40px;
+    min-height: 40px; max-height: 40px;
+}}
+QPushButton[buttonVariant="icon-accent"]:hover {{
+    background: {p['accent_hover']};
+}}
+
+/* --- Floating Action Button (FAB) --- */
+QPushButton[buttonVariant="fab"] {{
+    background: {p['card_bg']};
+    border: none;
+    border-radius: 28px;
+    padding: 0px;
+    min-width: 56px; max-width: 56px;
+    min-height: 56px; max-height: 56px;
+    font-size: 14px;
+}}
+QPushButton[buttonVariant="fab"]:hover {{
+    background: {p['menu_hover']};
+}}
+QPushButton[buttonVariant="fab"]:pressed {{
+    background: {p['bg_secondary']};
+}}
+QPushButton[buttonVariant="fab"]:disabled {{
+    color: {p['text_muted']};
+    background: {p['bg']};
+}}
+
+/* --- FAB Light --- */
+QPushButton[buttonVariant="fab-light"] {{
+    background: {p['button_light']};
+    border: none;
+    border-radius: 28px;
+    padding: 0px;
+    min-width: 56px; max-width: 56px;
+    min-height: 56px; max-height: 56px;
+}}
+QPushButton[buttonVariant="fab-light"]:hover {{
+    background: {p['menu_hover']};
+}}
+
+/* --- FAB Dark --- */
+QPushButton[buttonVariant="fab-dark"] {{
+    background: {p['button_dark']};
+    border: none;
+    border-radius: 28px;
+    padding: 0px;
+    min-width: 56px; max-width: 56px;
+    min-height: 56px; max-height: 56px;
+}}
+QPushButton[buttonVariant="fab-dark"]:hover {{
+    opacity: 0.85;
+}}
+
+/* --- FAB Accent --- */
+QPushButton[buttonVariant="fab-accent"] {{
+    background: {p['accent']};
+    border: none;
+    border-radius: 28px;
+    padding: 0px;
+    min-width: 56px; max-width: 56px;
+    min-height: 56px; max-height: 56px;
+}}
+QPushButton[buttonVariant="fab-accent"]:hover {{
+    background: {p['accent_hover']};
+}}
+QPushButton[buttonVariant="fab-accent"]:disabled {{
+    background: {p['bg']};
+    color: {p['text_muted']};
+}}
+
+/* --- Mini FAB (40 px) --- */
+QPushButton[buttonVariant="fab-mini"] {{
+    background: {p['card_bg']};
+    border: none;
+    border-radius: 20px;
+    padding: 0px;
+    min-width: 40px; max-width: 40px;
+    min-height: 40px; max-height: 40px;
+}}
+QPushButton[buttonVariant="fab-mini"]:hover {{
+    background: {p['menu_hover']};
+}}
+
+QPushButton[buttonVariant="fab-light-mini"] {{
+    background: {p['button_light']};
+    border: none; border-radius: 20px; padding: 0px;
+    min-width: 40px; max-width: 40px;
+    min-height: 40px; max-height: 40px;
+}}
+QPushButton[buttonVariant="fab-light-mini"]:hover {{
+    background: {p['menu_hover']};
+}}
+
+QPushButton[buttonVariant="fab-dark-mini"] {{
+    background: {p['button_dark']};
+    border: none; border-radius: 20px; padding: 0px;
+    min-width: 40px; max-width: 40px;
+    min-height: 40px; max-height: 40px;
+}}
+QPushButton[buttonVariant="fab-dark-mini"]:hover {{
+    opacity: 0.85;
+}}
+
+QPushButton[buttonVariant="fab-accent-mini"] {{
+    background: {p['accent']};
+    border: none; border-radius: 20px; padding: 0px;
+    min-width: 40px; max-width: 40px;
+    min-height: 40px; max-height: 40px;
+}}
+QPushButton[buttonVariant="fab-accent-mini"]:hover {{
+    background: {p['accent_hover']};
+}}
+
+/* --- Extended FAB --- */
+QPushButton[buttonVariant="fab-extended"] {{
+    background: {p['card_bg']};
+    color: {p['text']};
+    border: none;
+    border-radius: 24px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 13px;
+    min-height: 48px;
+}}
+QPushButton[buttonVariant="fab-extended"]:hover {{
+    background: {p['menu_hover']};
+}}
+
+QPushButton[buttonVariant="fab-extended-light"] {{
+    background: {p['button_light']};
+    color: {p['text']};
+    border: none; border-radius: 24px;
+    padding: 12px 24px; font-weight: 600; font-size: 13px;
+    min-height: 48px;
+}}
+QPushButton[buttonVariant="fab-extended-light"]:hover {{
+    background: {p['menu_hover']};
+}}
+
+QPushButton[buttonVariant="fab-extended-dark"] {{
+    background: {p['button_dark']};
+    color: #FFFFFF;
+    border: none; border-radius: 24px;
+    padding: 12px 24px; font-weight: 600; font-size: 13px;
+    min-height: 48px;
+}}
+QPushButton[buttonVariant="fab-extended-dark"]:hover {{
+    opacity: 0.85;
+}}
+
+QPushButton[buttonVariant="fab-extended-accent"] {{
+    background: {p['accent']};
+    color: #FFFFFF;
+    border: none; border-radius: 24px;
+    padding: 12px 24px; font-weight: 600; font-size: 13px;
+    min-height: 48px;
+}}
+QPushButton[buttonVariant="fab-extended-accent"]:hover {{
+    background: {p['accent_hover']};
+}}
+
+/* --- Custom gradient button --- */
+QPushButton[buttonVariant="custom-gradient"] {{
+    background: qlineargradient(
+        x1:0, y1:0, x2:0, y2:1,
+        stop:0 transparent,
+        stop:1 rgba(102, 102, 102, 85)
+    );
+    color: {p['text_muted']};
+    border: 1px solid {p['shadow_light']};
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 13px;
+    min-width: 130px;
+}}
+QPushButton[buttonVariant="custom-gradient"]:hover {{
+    border-color: {p['text_muted']};
+}}
+
+/* --- Custom outline gradient --- */
+QPushButton[buttonVariant="custom-outline-gradient"] {{
+    background: qlineargradient(
+        x1:0, y1:0, x2:0, y2:1,
+        stop:0 transparent,
+        stop:1 rgba(187, 187, 187, 204)
+    );
+    color: {p['text_muted']};
+    border: 1px solid {p['shadow_light']};
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 13px;
+    min-width: 130px;
+}}
+QPushButton[buttonVariant="custom-outline-gradient"]:hover {{
+    border-color: {p['text_muted']};
+}}
+
 /* --- Tool buttons --- */
 QToolButton {{
     background: {p['card_bg']};
@@ -483,9 +865,17 @@ QToolButton:pressed {{
 
 /* --- Inputs (neumorphic inset feel) --- */
 QLineEdit, QTextEdit, QPlainTextEdit {{
-    background: {p['input_bg']};
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 {p['bg_secondary']},
+        stop:1 {p['input_bg']}
+    );
     color: {p['text']};
-    border: none;
+    border: 1px solid {p['bg_secondary']};
+    border-top-color: {p['bg_secondary']};
+    border-left-color: {p['bg_secondary']};
+    border-right-color: {p['menu_hover']};
+    border-bottom-color: {p['menu_hover']};
     border-radius: 12px;
     padding: 10px 14px;
     selection-background-color: {p['accent']};
@@ -493,21 +883,43 @@ QLineEdit, QTextEdit, QPlainTextEdit {{
 }}
 
 QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {{
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 {p['input_bg']},
+        stop:1 {p['card_bg']}
+    );
     border: 2px solid {p['accent']};
-    padding: 8px 12px;
+    border-top-color: {p['accent_hover']};
+    border-left-color: {p['accent_hover']};
+    border-right-color: {p['accent']};
+    border-bottom-color: {p['accent']};
+    padding: 9px 13px;
 }}
 
 /* --- Spin boxes --- */
 QSpinBox, QDoubleSpinBox {{
-    background: {p['input_bg']};
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 {p['bg_secondary']},
+        stop:1 {p['input_bg']}
+    );
     color: {p['text']};
-    border: none;
+    border: 1px solid {p['bg_secondary']};
+    border-top-color: {p['bg_secondary']};
+    border-left-color: {p['bg_secondary']};
+    border-right-color: {p['menu_hover']};
+    border-bottom-color: {p['menu_hover']};
     border-radius: 10px;
     padding: 6px 10px;
 }}
 
 QSpinBox:focus, QDoubleSpinBox:focus {{
     border: 2px solid {p['accent']};
+    border-top-color: {p['accent_hover']};
+    border-left-color: {p['accent_hover']};
+    border-right-color: {p['accent']};
+    border-bottom-color: {p['accent']};
+    padding: 5px 9px;
 }}
 
 QSpinBox::up-button, QDoubleSpinBox::up-button,
@@ -537,15 +949,31 @@ QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {{
 
 /* --- Combo box --- */
 QComboBox {{
-    background: {p['input_bg']};
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 {p['bg_secondary']},
+        stop:1 {p['input_bg']}
+    );
     color: {p['text']};
-    border: none;
+    border: 1px solid {p['bg_secondary']};
+    border-top-color: {p['bg_secondary']};
+    border-left-color: {p['bg_secondary']};
+    border-right-color: {p['menu_hover']};
+    border-bottom-color: {p['menu_hover']};
     border-radius: 10px;
     padding: 6px 12px;
 }}
 
 QComboBox:hover {{
-    background: {p['menu_hover']};
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 {p['input_bg']},
+        stop:1 {p['menu_hover']}
+    );
+    border-top-color: {p['menu_hover']};
+    border-left-color: {p['menu_hover']};
+    border-right-color: {p['bg_secondary']};
+    border-bottom-color: {p['bg_secondary']};
 }}
 
 QComboBox::drop-down {{
@@ -579,15 +1007,28 @@ QComboBox QAbstractItemView {{
 
 /* --- Date / Time --- */
 QDateEdit, QTimeEdit, QDateTimeEdit {{
-    background: {p['input_bg']};
+    background: qlineargradient(
+        x1:0, y1:0, x2:1, y2:1,
+        stop:0 {p['bg_secondary']},
+        stop:1 {p['input_bg']}
+    );
     color: {p['text']};
-    border: none;
+    border: 1px solid {p['bg_secondary']};
+    border-top-color: {p['bg_secondary']};
+    border-left-color: {p['bg_secondary']};
+    border-right-color: {p['menu_hover']};
+    border-bottom-color: {p['menu_hover']};
     border-radius: 10px;
     padding: 6px 10px;
 }}
 
 QDateEdit:focus, QTimeEdit:focus, QDateTimeEdit:focus {{
     border: 2px solid {p['accent']};
+    border-top-color: {p['accent_hover']};
+    border-left-color: {p['accent_hover']};
+    border-right-color: {p['accent']};
+    border-bottom-color: {p['accent']};
+    padding: 5px 9px;
 }}
 
 /* Drop-down button (calendar popup trigger) */
