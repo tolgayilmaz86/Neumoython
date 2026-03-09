@@ -10,6 +10,9 @@ from widgets.registry import registry, WidgetDemo
 from widgets.box_shadow import BoxShadowWrapper
 from widgets.popup_datetime_field import PopupDateTimeField
 from styles.theme_manager import theme_manager
+from styles.snippets import (
+    value_label as _value_label_qss, calendar_qss, transparent_label,
+)
 
 
 def _neu_group(group: QtWidgets.QGroupBox) -> BoxShadowWrapper:
@@ -21,64 +24,9 @@ def _neu_group(group: QtWidgets.QGroupBox) -> BoxShadowWrapper:
 
 
 def _value_label(text: str) -> QtWidgets.QLabel:
-    p = theme_manager.palette
     lbl = QtWidgets.QLabel(text)
-    lbl.setStyleSheet(
-        f"color: {p['accent']}; font-weight: 600; font-size: 13px; background: transparent;"
-    )
+    lbl.setStyleSheet(_value_label_qss())
     return lbl
-
-
-# ---------------------------------------------------------------------------
-# QSS for QCalendarWidget
-# ---------------------------------------------------------------------------
-
-def _calendar_qss() -> str:
-    p = theme_manager.palette
-    return f"""
-        QCalendarWidget {{
-            background: {p['card_bg']};
-            color: {p['text']};
-        }}
-        QCalendarWidget QAbstractItemView {{
-            background: {p['card_bg']};
-            color: {p['text']};
-            selection-background-color: {p['accent']};
-            selection-color: #FFFFFF;
-            gridline-color: {p['bg_secondary']};
-            border: none;
-            border-radius: 8px;
-        }}
-        QCalendarWidget QAbstractItemView:disabled {{
-            color: {p['text_muted']};
-        }}
-        QCalendarWidget QToolButton {{
-            background: {p['card_bg']};
-            color: {p['text']};
-            border: none;
-            border-radius: 8px;
-            padding: 4px 8px;
-            font-weight: 600;
-        }}
-        QCalendarWidget QToolButton:hover {{
-            background: {p['menu_hover']};
-        }}
-        QCalendarWidget QSpinBox {{
-            background: {p['input_bg']};
-            color: {p['text']};
-            border: none;
-            border-radius: 6px;
-            padding: 2px 6px;
-        }}
-        QCalendarWidget QWidget#qt_calendar_navigationbar {{
-            background: {p['bg_secondary']};
-            border-radius: 10px;
-            padding: 4px;
-        }}
-        QCalendarWidget QWidget {{
-            background: {p['card_bg']};
-        }}
-    """
 
 
 # ---------------------------------------------------------------------------
@@ -187,7 +135,7 @@ def create_page() -> QtWidgets.QWidget:
     row4 = QtWidgets.QHBoxLayout()
     row4.addWidget(min_date_edit)
     range_lbl = QtWidgets.QLabel("(±90 days from today)")
-    range_lbl.setStyleSheet(f"font-size: 11px; color: {p['text_muted']}; background: transparent;")
+    range_lbl.setStyleSheet(transparent_label("text_muted", 11))
     row4.addWidget(range_lbl)
     row4.addStretch()
     g1.addRow("Date (range):", row4)
@@ -201,7 +149,7 @@ def create_page() -> QtWidgets.QWidget:
     g2.setSpacing(12)
 
     calendar = QtWidgets.QCalendarWidget()
-    calendar.setStyleSheet(_calendar_qss())
+    calendar.setStyleSheet(calendar_qss())
     calendar.setGridVisible(False)
     calendar.setNavigationBarVisible(True)
     calendar.setMaximumWidth(380)

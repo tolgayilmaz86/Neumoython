@@ -9,6 +9,7 @@ from PySide6 import QtCore, QtWidgets
 from widgets.registry import registry, WidgetDemo
 from widgets.box_shadow import BoxShadow, BoxShadowWrapper
 from styles.theme_manager import theme_manager
+from styles.snippets import section_heading
 
 
 def _neu_group(group: QtWidgets.QGroupBox) -> BoxShadowWrapper:
@@ -45,12 +46,8 @@ def _neu_fab(btn: QtWidgets.QPushButton) -> BoxShadowWrapper:
 
 
 def _section_label(text: str) -> QtWidgets.QLabel:
-    p = theme_manager.palette
     lbl = QtWidgets.QLabel(text)
-    lbl.setStyleSheet(
-        f"color: {p['text_muted']}; font-size: 14px; font-weight: 600; "
-        "background: transparent; margin-top: 8px;"
-    )
+    lbl.setStyleSheet(section_heading())
     return lbl
 
 

@@ -13,6 +13,7 @@ from PySide6.QtWidgets import QFrame, QHBoxLayout, QPushButton, QVBoxLayout, QLa
 from widgets.registry import registry
 from widgets.box_shadow import BoxShadowWrapper
 from styles.theme_manager import theme_manager, ACCENT_PURPLE, ACCENT_BLUE, ACCENT_TEAL, ACCENT_CORAL, ACCENT_PINK
+from styles.snippets import accent_dot, icon_circle, explore_link
 
 # ---------------------------------------------------------------------------
 # Page transition helpers
@@ -320,10 +321,7 @@ def _build_home_page(main_window) -> QtWidgets.QWidget:
         dot.setFixedSize(28, 28)
         dot.setToolTip(f"{label_text}  {color_hex}")
         dot.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        dot.setStyleSheet(
-            f"QPushButton {{ background: {color_hex}; border-radius: 14px; border: none; }}"
-            f"QPushButton:hover {{ border: 2px solid #FFFFFF; }}"
-        )
+        dot.setStyleSheet(accent_dot(color_hex))
         dot.clicked.connect(
             lambda checked=False, c=color_hex, mw=main_window: _apply_accent(c, mw)
         )
@@ -381,9 +379,7 @@ def _make_card(demo, main_window) -> QtWidgets.QWidget:
     icon_widget.setPixmap(qta.icon(icon_name, color=p['accent']).pixmap(36, 36))
     icon_widget.setFixedSize(52, 52)
     icon_widget.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-    icon_widget.setStyleSheet(
-        f"background: {p['bg']}; border-radius: 26px;"
-    )
+    icon_widget.setStyleSheet(icon_circle(26))
     layout.addWidget(icon_widget)
 
     layout.addSpacing(4)
@@ -409,7 +405,7 @@ def _make_card(demo, main_window) -> QtWidgets.QWidget:
 
     # "Explore →" link
     explore = QtWidgets.QLabel(f"Explore  →")
-    explore.setStyleSheet(f"color: {p['accent']}; background: transparent; font-size: 12px; font-weight: 600;")
+    explore.setStyleSheet(explore_link())
     layout.addWidget(explore)
 
     # Wrap in BoxShadowWrapper for neumorphic raised effect

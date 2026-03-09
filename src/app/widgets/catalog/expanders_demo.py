@@ -15,6 +15,11 @@ from PySide6.QtWidgets import QFrame
 from widgets.registry import registry, WidgetDemo
 from widgets.box_shadow import BoxShadow, BoxShadowWrapper
 from styles.theme_manager import theme_manager
+from styles.snippets import (
+    transparent_label as _transparent_label_qss,
+    expander_default, expander_circle, expander_stroke,
+    expander_stroke_horizontal,
+)
 
 _LOREM = (
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
@@ -35,10 +40,9 @@ def _neu_group(group: QtWidgets.QGroupBox) -> BoxShadowWrapper:
 
 
 def _content_label() -> QtWidgets.QLabel:
-    p = theme_manager.palette
     lbl = QtWidgets.QLabel(_LOREM)
     lbl.setWordWrap(True)
-    lbl.setStyleSheet(f"color: {p['text']}; background: transparent; padding: 10px;")
+    lbl.setStyleSheet(_transparent_label_qss(extra=" padding: 10px;"))
     return lbl
 
 
@@ -199,23 +203,7 @@ class _NeuExpander(QFrame):
         if is_vertical:
             self._toggle.setText(f"  {title}")
             self._toggle.setObjectName(obj)
-            self._toggle.setStyleSheet(f"""
-                #{obj} {{
-                    text-align: left;
-                    padding: 10px 16px;
-                    font-weight: 600;
-                    font-size: 13px;
-                    color: {p['text_heading']};
-                    background: {p['card_bg']};
-                    border: none;
-                    border-radius: 12px;
-                }}
-                #{obj}:hover {{ background: {p['menu_hover']}; }}
-                #{obj}:disabled {{
-                    color: {p['text_muted']};
-                    background: {p['bg_secondary']};
-                }}
-            """)
+            self._toggle.setStyleSheet(expander_default(obj))
         else:
             # Horizontal: narrow vertical strip with rotated text
             vbtn = _VerticalButton(title)
@@ -227,21 +215,7 @@ class _NeuExpander(QFrame):
             self._toggle = vbtn
             self._toggle.setObjectName(obj)
             self._toggle.setFixedWidth(40)
-            self._toggle.setStyleSheet(f"""
-                #{obj} {{
-                    background: {p['card_bg']};
-                    border: none;
-                    border-radius: 12px;
-                    color: {p['text_heading']};
-                    font-weight: 600;
-                    font-size: 13px;
-                }}
-                #{obj}:hover {{ background: {p['menu_hover']}; }}
-                #{obj}:disabled {{
-                    color: {p['text_muted']};
-                    background: {p['bg_secondary']};
-                }}
-            """)
+            self._toggle.setStyleSheet(expander_default(obj, horizontal=True))
         wrapper = BoxShadowWrapper(
             self._toggle, shadow_list=shadows["button_raised"],
             smooth=True, margins=(4, 4, 4, 4),
@@ -267,19 +241,7 @@ class _NeuExpander(QFrame):
         self._toggle.setIcon(
             qta.icon(self._chev_collapsed, color=p["text"]))
         self._toggle.setIconSize(QtCore.QSize(18, 18))
-        self._toggle.setStyleSheet(f"""
-            #neuExpanderCircle {{
-                background: {p['card_bg']};
-                border: none;
-                border-radius: 16px;
-            }}
-            #neuExpanderCircle:hover {{
-                background: {p['menu_hover']};
-            }}
-            #neuExpanderCircle:disabled {{
-                background: {p['bg_secondary']};
-            }}
-        """)
+        self._toggle.setStyleSheet(expander_circle("neuExpanderCircle"))
 
         circle_wrap = BoxShadowWrapper(
             self._toggle, shadow_list=shadows["button_raised"],
@@ -292,8 +254,7 @@ class _NeuExpander(QFrame):
             lay.setSpacing(8)
             lbl = QtWidgets.QLabel(title)
             lbl.setStyleSheet(
-                f"color: {p['text_heading']}; font-weight: 600; font-size: 13px; "
-                f"background: transparent;")
+                _transparent_label_qss("text_heading", 13, 600))
             lay.addWidget(circle_wrap)
             lay.addWidget(lbl)
             lay.addStretch()
@@ -305,8 +266,7 @@ class _NeuExpander(QFrame):
             container.setFixedWidth(48)
             lbl = QtWidgets.QLabel(title)
             lbl.setStyleSheet(
-                f"color: {p['text_heading']}; font-weight: 600; font-size: 12px; "
-                f"background: transparent;")
+                _transparent_label_qss("text_heading", 12, 600))
             lbl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             # Use a rotated proxy widget for the label
             proxy_container = QtWidgets.QGraphicsView()
@@ -338,27 +298,7 @@ class _NeuExpander(QFrame):
             self._toggle.setIcon(
                 qta.icon(self._chev_collapsed, color=p["text"]))
             self._toggle.setIconSize(QtCore.QSize(18, 18))
-            self._toggle.setStyleSheet(f"""
-                #{obj} {{
-                    text-align: left;
-                    padding: 10px 16px;
-                    font-weight: 600;
-                    font-size: 13px;
-                    color: {p['text_heading']};
-                    background: transparent;
-                    border: 2px solid {p['text_muted']};
-                    border-radius: 14px;
-                }}
-                #{obj}:hover {{
-                    border-color: {p['accent']};
-                    color: {p['accent']};
-                }}
-                #{obj}:disabled {{
-                    color: {p['text_muted']};
-                    border-color: {p['bg_secondary']};
-                    background: {p['bg_secondary']};
-                }}
-            """)
+            self._toggle.setStyleSheet(expander_stroke(obj))
             self._header_widget = self._toggle
         else:
             # Narrow vertical strip with rotated text + border
@@ -370,25 +310,7 @@ class _NeuExpander(QFrame):
             self._toggle = vbtn
             self._toggle.setObjectName(obj)
             self._toggle.setFixedWidth(40)
-            self._toggle.setStyleSheet(f"""
-                #{obj} {{
-                    background: transparent;
-                    border: 2px solid {p['text_muted']};
-                    border-radius: 14px;
-                    color: {p['text_heading']};
-                    font-weight: 600;
-                    font-size: 13px;
-                }}
-                #{obj}:hover {{
-                    border-color: {p['accent']};
-                    color: {p['accent']};
-                }}
-                #{obj}:disabled {{
-                    color: {p['text_muted']};
-                    border-color: {p['bg_secondary']};
-                    background: {p['bg_secondary']};
-                }}
-            """)
+            self._toggle.setStyleSheet(expander_stroke_horizontal(obj))
             self._header_widget = self._toggle
 
     # ── expand / collapse ──
@@ -475,8 +397,7 @@ def create_page() -> QtWidgets.QWidget:
         col.setSpacing(10)
         col_label = QtWidgets.QLabel(col_title)
         col_label.setStyleSheet(
-            f"color: {p['text_muted']}; font-weight: 600; font-size: 12px; "
-            f"background: transparent;")
+            _transparent_label_qss("text_muted", 12, 600))
         col.addWidget(col_label)
 
         # Down expander

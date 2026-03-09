@@ -8,6 +8,7 @@ from PySide6.QtWidgets import QFrame
 from widgets.registry import registry, WidgetDemo
 from widgets.box_shadow import BoxShadowWrapper
 from styles.theme_manager import theme_manager
+from styles.snippets import card_frame, transparent_label
 
 
 def _outset_card(shadow_list: list[dict], content_widget: QtWidgets.QWidget,
@@ -16,9 +17,7 @@ def _outset_card(shadow_list: list[dict], content_widget: QtWidgets.QWidget,
     frame = QFrame()
     frame.setFrameShape(QFrame.Shape.NoFrame)
     p = theme_manager.palette
-    frame.setStyleSheet(
-        f"QFrame {{ background: {p['card_bg']}; border-radius: {corner_radius}px; }}"
-    )
+    frame.setStyleSheet(card_frame(corner_radius))
     lay = QtWidgets.QVBoxLayout(frame)
     lay.setContentsMargins(20, 20, 20, 20)
     lay.addWidget(content_widget)
@@ -33,10 +32,7 @@ def _inset_card(shadow_list: list[dict], content_widget: QtWidgets.QWidget,
     """Wrap *content_widget* in an inset (pressed) neumorphic card."""
     frame = QFrame()
     frame.setFrameShape(QFrame.Shape.NoFrame)
-    p = theme_manager.palette
-    frame.setStyleSheet(
-        f"QFrame {{ background: {p['card_bg']}; border-radius: {corner_radius}px; }}"
-    )
+    frame.setStyleSheet(card_frame(corner_radius))
     lay = QtWidgets.QVBoxLayout(frame)
     lay.setContentsMargins(20, 20, 20, 20)
     lay.addWidget(content_widget)
@@ -54,7 +50,7 @@ def _label(text: str, *, bold: bool = False, size: int = 13,
     f.setPointSize(size)
     f.setBold(bold)
     lbl.setFont(f)
-    lbl.setStyleSheet(f"color: {theme_manager.palette[color_key]}; background: transparent;")
+    lbl.setStyleSheet(transparent_label(color_key, size, 700 if bold else 400))
     return lbl
 
 

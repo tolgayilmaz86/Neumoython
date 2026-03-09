@@ -10,6 +10,7 @@ import qtawesome as qta
 from PySide6 import QtCore, QtGui, QtWidgets
 
 from styles.theme_manager import theme_manager
+from styles.snippets import calendar_qss
 from widgets.box_shadow import BoxShadow
 
 
@@ -132,46 +133,7 @@ class _DateTimePopup(QtWidgets.QFrame):
             """
         )
 
-        self._calendar.setStyleSheet(
-            f"""
-            QCalendarWidget {{
-                background: {p['card_bg']};
-                color: {p['text']};
-            }}
-            QCalendarWidget QAbstractItemView {{
-                background: {p['card_bg']};
-                color: {p['text']};
-                selection-background-color: {p['accent']};
-                selection-color: #FFFFFF;
-                border-radius: 8px;
-                border: none;
-                gridline-color: {p['bg_secondary']};
-            }}
-            QCalendarWidget QToolButton {{
-                background: {p['input_bg']};
-                color: {p['text']};
-                border: none;
-                border-radius: 8px;
-                padding: 4px 8px;
-                font-weight: 600;
-            }}
-            QCalendarWidget QToolButton:hover {{
-                background: {p['menu_hover']};
-            }}
-            QCalendarWidget QSpinBox {{
-                background: {p['input_bg']};
-                color: {p['text']};
-                border: none;
-                border-radius: 6px;
-                padding: 2px 6px;
-            }}
-            QCalendarWidget QWidget#qt_calendar_navigationbar {{
-                background: {p['bg_secondary']};
-                border-radius: 10px;
-                padding: 4px;
-            }}
-            """
-        )
+        self._calendar.setStyleSheet(calendar_qss())
 
 
 class PopupDateTimeField(QtWidgets.QWidget):

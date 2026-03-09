@@ -12,6 +12,7 @@ from PySide6 import QtCore, QtWidgets
 from PySide6.QtWidgets import QFrame
 
 from styles.theme_manager import theme_manager
+from styles.snippets import collapsible_toggle
 
 
 class CollapsibleSection(QFrame):
@@ -43,24 +44,7 @@ class CollapsibleSection(QFrame):
         self._toggle_btn.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
         header_text = f"  {title}" if title else ""
         self._toggle_btn.setText(header_text)
-        self._toggle_btn.setStyleSheet(f"""
-            QPushButton {{
-                text-align: left;
-                padding: 12px 16px;
-                font-weight: 600;
-                font-size: 13px;
-                color: {p['text_heading']};
-                background: {p['card_bg']};
-                border: none;
-                border-radius: 12px;
-            }}
-            QPushButton:hover {{
-                background: {p['menu_hover']};
-            }}
-            QPushButton:focus {{
-                border: 2px solid {p['accent']};
-            }}
-        """)
+        self._toggle_btn.setStyleSheet(collapsible_toggle())
 
         if icon_name:
             self._toggle_btn.setIcon(

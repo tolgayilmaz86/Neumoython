@@ -15,6 +15,11 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from widgets.registry import registry, WidgetDemo
 from widgets.box_shadow import BoxShadow, BoxShadowWrapper
 from styles.theme_manager import theme_manager
+from styles.snippets import (
+    dialog_card, dialog_title, dialog_separator, dialog_message,
+    dialog_accent_button, dialog_secondary_button, close_button,
+    transparent_label, outline_color_button,
+)
 
 
 def _neu_group(group: QtWidgets.QGroupBox) -> BoxShadowWrapper:
@@ -83,13 +88,7 @@ class NeuDialog(QtWidgets.QDialog):
 
         card = QtWidgets.QFrame()
         card.setObjectName("neu_dialog_card")
-        card.setStyleSheet(f"""
-            QFrame#neu_dialog_card {{
-                background: {lifted_bg};
-                border-radius: 20px;
-                border: 1px solid {border_color};
-            }}
-        """)
+        card.setStyleSheet(dialog_card(lifted_bg, border_color))
         outer_layout.addWidget(card)
 
         card_layout = QtWidgets.QVBoxLayout(card)
@@ -105,10 +104,7 @@ class NeuDialog(QtWidgets.QDialog):
         title_row.addWidget(icon_lbl)
 
         title_lbl = QtWidgets.QLabel(title)
-        title_lbl.setStyleSheet(
-            f"color: {p['text_heading']}; font-size: 16px; font-weight: 700; "
-            "background: transparent;"
-        )
+        title_lbl.setStyleSheet(dialog_title())
         title_row.addWidget(title_lbl, stretch=1)
 
         close_btn = QtWidgets.QPushButton()
@@ -116,7 +112,7 @@ class NeuDialog(QtWidgets.QDialog):
         close_btn.setFlat(True)
         close_btn.setIcon(qta.icon("mdi6.close", color=p["text_muted"]))
         close_btn.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
-        close_btn.setStyleSheet("background: transparent; border: none;")
+        close_btn.setStyleSheet(close_button())
         close_btn.setToolTip("Close")
         close_btn.clicked.connect(self.reject)
         title_row.addWidget(close_btn)
@@ -126,15 +122,13 @@ class NeuDialog(QtWidgets.QDialog):
         # ── separator ─────────────────────────────────────────────────────
         sep = QtWidgets.QFrame()
         sep.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-        sep.setStyleSheet(f"background: {p['bg_secondary']}; border: none; max-height: 1px;")
+        sep.setStyleSheet(dialog_separator())
         card_layout.addWidget(sep)
 
         # ── message ───────────────────────────────────────────────────────
         if message:
             msg_lbl = QtWidgets.QLabel(message)
-            msg_lbl.setStyleSheet(
-                f"color: {p['text']}; font-size: 13px; background: transparent;"
-            )
+            msg_lbl.setStyleSheet(dialog_message())
             msg_lbl.setWordWrap(True)
             card_layout.addWidget(msg_lbl)
 
@@ -150,35 +144,9 @@ class NeuDialog(QtWidgets.QDialog):
             btn = QtWidgets.QPushButton(label)
             if is_accent:
                 btn.setProperty("accentButton", True)
-                btn.setStyleSheet(f"""
-                    QPushButton {{
-                        background: {type_color};
-                        color: #FFFFFF;
-                        border-radius: 10px;
-                        padding: 8px 20px;
-                        font-weight: 600;
-                        font-size: 13px;
-                        border: none;
-                    }}
-                    QPushButton:hover {{
-                        background: {type_color}CC;
-                    }}
-                """)
+                btn.setStyleSheet(dialog_accent_button(type_color))
             else:
-                btn.setStyleSheet(f"""
-                    QPushButton {{
-                        background: {p['bg_secondary']};
-                        color: {p['text']};
-                        border-radius: 10px;
-                        padding: 8px 20px;
-                        font-weight: 600;
-                        font-size: 13px;
-                        border: none;
-                    }}
-                    QPushButton:hover {{
-                        background: {p['menu_hover']};
-                    }}
-                """)
+                btn.setStyleSheet(dialog_secondary_button())
             lbl_capture = label
             btn.clicked.connect(lambda checked=False, t=lbl_capture: self._on_btn(t))
             btn_row.addWidget(btn)
@@ -305,7 +273,7 @@ class InputDialog(NeuDialog):
         row = QtWidgets.QHBoxLayout()
         row.setSpacing(10)
         lbl = QtWidgets.QLabel(prompt)
-        lbl.setStyleSheet(f"color: {p['text']}; background: transparent;")
+        lbl.setStyleSheet(transparent_label())
         self._input = QtWidgets.QLineEdit()
         self._input.setPlaceholderText(placeholder)
         row.addWidget(lbl)
@@ -354,8 +322,7 @@ def create_page() -> QtWidgets.QWidget:
 
     result_lbl = QtWidgets.QLabel("Dialog result will appear here.")
     result_lbl.setStyleSheet(
-        f"color: {p['text_muted']}; font-size: 12px; background: transparent; "
-        "font-style: italic;"
+        transparent_label("text_muted", 12, extra=" font-style: italic;")
     )
 
     def _show(dlg: NeuDialog, result_fmt: Callable[[], str] = lambda: "") -> None:
@@ -381,20 +348,7 @@ def create_page() -> QtWidgets.QWidget:
         t = dlg_type
         btn = QtWidgets.QPushButton(lbl)
         btn.setIcon(qta.icon(ico, color=color))
-        btn.setStyleSheet(f"""
-            QPushButton {{
-                color: {color};
-                border: 2px solid {color};
-                border-radius: 10px;
-                padding: 8px 18px;
-                font-weight: 600;
-                background: transparent;
-            }}
-            QPushButton:hover {{
-                background: {color};
-                color: #FFFFFF;
-            }}
-        """)
+        btn.setStyleSheet(outline_color_button(color))
         btn.clicked.connect(lambda checked=False, dt=t: _show(NeuDialog(
             inner.window(), dt.capitalize(),
             f"This is a {dt} message. Check your settings or try again.",
@@ -413,20 +367,7 @@ def create_page() -> QtWidgets.QWidget:
 
     confirm_btn = QtWidgets.QPushButton("Delete Item")
     confirm_btn.setIcon(qta.icon("mdi6.delete-outline", color="#D32F2F"))
-    confirm_btn.setStyleSheet(f"""
-        QPushButton {{
-            color: #D32F2F;
-            border: 2px solid #D32F2F;
-            border-radius: 10px;
-            padding: 8px 18px;
-            font-weight: 600;
-            background: transparent;
-        }}
-        QPushButton:hover {{
-            background: #D32F2F;
-            color: #FFFFFF;
-        }}
-    """)
+    confirm_btn.setStyleSheet(outline_color_button("#D32F2F"))
     confirm_btn.clicked.connect(lambda: _show(
         NeuDialog.confirm(inner.window(),
                           "Delete Item?",

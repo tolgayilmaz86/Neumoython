@@ -1,11 +1,23 @@
 """Reusable PySide6 neumorphic widget library.
 
-All public widgets are re-exported from this package::
+Quick-start
+-----------
+Import widgets directly from this package::
 
     from widgets import ToggleSwitch, CollapsibleSection
     from widgets import BoxShadow, BoxShadowWrapper
     from widgets import roundProgressBar
     from widgets import Snackbar, RippleButton
+
+Theming & QSS helpers live in the :mod:`styles` package::
+
+    from styles import theme_manager, qss
+
+    theme_manager.set_theme("dark")
+    theme_manager.apply()
+
+    my_label.setStyleSheet(qss.transparent_label("text_muted", 14, 600))
+    my_cal.setStyleSheet(qss.calendar_qss())
 """
 
 from __future__ import annotations

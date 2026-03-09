@@ -7,6 +7,16 @@ import tempfile
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
+__all__ = [
+    "ThemeManager",
+    "theme_manager",
+    "ACCENT_PURPLE",
+    "ACCENT_BLUE",
+    "ACCENT_TEAL",
+    "ACCENT_CORAL",
+    "ACCENT_PINK",
+]
+
 
 # ---------------------------------------------------------------------------
 # Arrow SVG generator – tiny coloured triangles for QSS ``image: url(…)``
