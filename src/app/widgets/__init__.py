@@ -15,6 +15,7 @@ __version__ = "0.1.0"
 from widgets.box_shadow import BoxShadow, BoxShadowWrapper
 from widgets.toggle_switch import ToggleSwitch
 from widgets.collapsible_section import CollapsibleSection
+from widgets.popup_datetime_field import PopupDateTimeField
 from widgets.progress_widgets import (
     roundProgressBar,
     spiralProgressBar,
@@ -35,6 +36,7 @@ __all__ = [
     "BoxShadowWrapper",
     "ToggleSwitch",
     "CollapsibleSection",
+    "PopupDateTimeField",
     "roundProgressBar",
     "spiralProgressBar",
     "NeuProgressBar",

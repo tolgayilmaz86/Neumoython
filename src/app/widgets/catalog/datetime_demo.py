@@ -8,6 +8,7 @@ from PySide6 import QtCore, QtWidgets
 
 from widgets.registry import registry, WidgetDemo
 from widgets.box_shadow import BoxShadowWrapper
+from widgets.popup_datetime_field import PopupDateTimeField
 from styles.theme_manager import theme_manager
 
 
@@ -159,6 +160,21 @@ def create_page() -> QtWidgets.QWidget:
     row3.addStretch()
     g1.addRow("Date & Time:", row3)
 
+    # Popup date-time field (text field + popup picker)
+    popup_field = PopupDateTimeField(
+        display_format="dd MMM yyyy, HH:mm",
+    )
+    popup_field.setMinimumWidth(280)
+    popup_val = _value_label(popup_field.date_time().toString("yyyy-MM-dd HH:mm"))
+    popup_field.dateTimeChanged.connect(
+        lambda dt: popup_val.setText(dt.toString("yyyy-MM-dd HH:mm"))
+    )
+    row_popup = QtWidgets.QHBoxLayout()
+    row_popup.addWidget(popup_field)
+    row_popup.addWidget(popup_val)
+    row_popup.addStretch()
+    g1.addRow("Popup Field:", row_popup)
+
     # Range-constrained date
     min_date_edit = QtWidgets.QDateEdit(QtCore.QDate.currentDate())
     min_date_edit.setCalendarPopup(True)
@@ -272,6 +288,7 @@ def create_about() -> QtWidgets.QWidget:
         "  • QDateEdit – date picker with optional calendar popup\n"
         "  • QTimeEdit – time spinner with HH:mm:ss display\n"
         "  • QDateTimeEdit – combined date + time picker\n"
+        "  • PopupDateTimeField – text field that opens a popup date-time picker\n"
         "  • QCalendarWidget – inline month calendar view\n"
         "  • Date range selector – from / to with duration calculation\n\n"
         "All widgets are styled via the ThemeManager QSS generator "
