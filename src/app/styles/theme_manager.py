@@ -865,17 +865,9 @@ QToolButton:pressed {{
 
 /* --- Inputs (neumorphic inset feel) --- */
 QLineEdit, QTextEdit, QPlainTextEdit {{
-    background: qlineargradient(
-        x1:0, y1:0, x2:1, y2:1,
-        stop:0 {p['bg_secondary']},
-        stop:1 {p['input_bg']}
-    );
+    background: {p['input_bg']};
     color: {p['text']};
-    border: 1px solid {p['bg_secondary']};
-    border-top-color: {p['bg_secondary']};
-    border-left-color: {p['bg_secondary']};
-    border-right-color: {p['menu_hover']};
-    border-bottom-color: {p['menu_hover']};
+    border: 2px solid {p['input_bg']};
     border-radius: 12px;
     padding: 10px 14px;
     selection-background-color: {p['accent']};
@@ -883,43 +875,23 @@ QLineEdit, QTextEdit, QPlainTextEdit {{
 }}
 
 QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {{
-    background: qlineargradient(
-        x1:0, y1:0, x2:1, y2:1,
-        stop:0 {p['input_bg']},
-        stop:1 {p['card_bg']}
-    );
+    background: {p['input_bg']};
     border: 2px solid {p['accent']};
-    border-top-color: {p['accent_hover']};
-    border-left-color: {p['accent_hover']};
-    border-right-color: {p['accent']};
-    border-bottom-color: {p['accent']};
-    padding: 9px 13px;
+    padding: 10px 14px;
 }}
 
 /* --- Spin boxes --- */
 QSpinBox, QDoubleSpinBox {{
-    background: qlineargradient(
-        x1:0, y1:0, x2:1, y2:1,
-        stop:0 {p['bg_secondary']},
-        stop:1 {p['input_bg']}
-    );
+    background: {p['input_bg']};
     color: {p['text']};
-    border: 1px solid {p['bg_secondary']};
-    border-top-color: {p['bg_secondary']};
-    border-left-color: {p['bg_secondary']};
-    border-right-color: {p['menu_hover']};
-    border-bottom-color: {p['menu_hover']};
+    border: 2px solid {p['input_bg']};
     border-radius: 10px;
     padding: 6px 10px;
 }}
 
 QSpinBox:focus, QDoubleSpinBox:focus {{
     border: 2px solid {p['accent']};
-    border-top-color: {p['accent_hover']};
-    border-left-color: {p['accent_hover']};
-    border-right-color: {p['accent']};
-    border-bottom-color: {p['accent']};
-    padding: 5px 9px;
+    padding: 6px 10px;
 }}
 
 QSpinBox::up-button, QDoubleSpinBox::up-button,
@@ -949,31 +921,16 @@ QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {{
 
 /* --- Combo box --- */
 QComboBox {{
-    background: qlineargradient(
-        x1:0, y1:0, x2:1, y2:1,
-        stop:0 {p['bg_secondary']},
-        stop:1 {p['input_bg']}
-    );
+    background: {p['input_bg']};
     color: {p['text']};
-    border: 1px solid {p['bg_secondary']};
-    border-top-color: {p['bg_secondary']};
-    border-left-color: {p['bg_secondary']};
-    border-right-color: {p['menu_hover']};
-    border-bottom-color: {p['menu_hover']};
+    border: 2px solid {p['input_bg']};
     border-radius: 10px;
     padding: 6px 12px;
 }}
 
 QComboBox:hover {{
-    background: qlineargradient(
-        x1:0, y1:0, x2:1, y2:1,
-        stop:0 {p['input_bg']},
-        stop:1 {p['menu_hover']}
-    );
-    border-top-color: {p['menu_hover']};
-    border-left-color: {p['menu_hover']};
-    border-right-color: {p['bg_secondary']};
-    border-bottom-color: {p['bg_secondary']};
+    background: {p['input_bg']};
+    border: 2px solid {p['menu_hover']};
 }}
 
 QComboBox::drop-down {{
@@ -1007,28 +964,16 @@ QComboBox QAbstractItemView {{
 
 /* --- Date / Time --- */
 QDateEdit, QTimeEdit, QDateTimeEdit {{
-    background: qlineargradient(
-        x1:0, y1:0, x2:1, y2:1,
-        stop:0 {p['bg_secondary']},
-        stop:1 {p['input_bg']}
-    );
+    background: {p['input_bg']};
     color: {p['text']};
-    border: 1px solid {p['bg_secondary']};
-    border-top-color: {p['bg_secondary']};
-    border-left-color: {p['bg_secondary']};
-    border-right-color: {p['menu_hover']};
-    border-bottom-color: {p['menu_hover']};
+    border: 2px solid {p['input_bg']};
     border-radius: 10px;
     padding: 6px 10px;
 }}
 
 QDateEdit:focus, QTimeEdit:focus, QDateTimeEdit:focus {{
     border: 2px solid {p['accent']};
-    border-top-color: {p['accent_hover']};
-    border-left-color: {p['accent_hover']};
-    border-right-color: {p['accent']};
-    border-bottom-color: {p['accent']};
-    padding: 5px 9px;
+    padding: 6px 10px;
 }}
 
 /* Drop-down button (calendar popup trigger) */

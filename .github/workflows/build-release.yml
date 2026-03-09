@@ -28,7 +28,7 @@ jobs:
 
     - name: Build executable
       run: |
-        pyinstaller --onefile --windowed --name Neumoython main.py
+        pyinstaller --onefile --windowed --name Neumoython src/app/main.py
 
     - name: Upload executable as artifact
       uses: actions/upload-artifact@v4

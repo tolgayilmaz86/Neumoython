@@ -10,7 +10,7 @@ import qtawesome as qta
 from PySide6 import QtCore, QtGui, QtWidgets
 
 from widgets.registry import registry, WidgetDemo
-from widgets.box_shadow import BoxShadowWrapper
+from widgets.box_shadow import BoxShadow, BoxShadowWrapper
 from styles.theme_manager import theme_manager
 
 
@@ -60,6 +60,11 @@ class FloatingLabelField(QtWidgets.QWidget):
         self._field_frame = QtWidgets.QFrame()
         self._field_frame.setMinimumHeight(52)
         outer.addWidget(self._field_frame)
+
+        # Neumorphic inset shadow for recessed look
+        shadows = theme_manager.shadow_configs()
+        self._shadow = BoxShadow(shadows["input_inset"], smooth=True)
+        self._field_frame.setGraphicsEffect(self._shadow)
 
         field_row = QtWidgets.QHBoxLayout(self._field_frame)
         field_row.setContentsMargins(14, 18, 8, 4)
@@ -134,12 +139,12 @@ class FloatingLabelField(QtWidgets.QWidget):
     def _apply_mode(self, mode: str, helper_text: str = "") -> None:
         p = theme_manager.palette
         border_colors = {
-            "normal":  p["text_muted"],
+            "normal":  p["input_bg"],   # invisible – shadow provides depth
             "focus":   p["accent"],
             "error":   "#D32F2F",
             "success": "#388E3C",
         }
-        col = border_colors.get(mode, p["text_muted"])
+        col = border_colors.get(mode, p["input_bg"])
 
         self._field_frame.setStyleSheet(f"""
             QFrame {{
@@ -328,6 +333,19 @@ def create_page() -> QtWidgets.QWidget:
     plain = QtWidgets.QPlainTextEdit()
     plain.setPlaceholderText("Type your message…")
     plain.setMinimumHeight(120)
+    plain.setStyleSheet(f"""
+        QPlainTextEdit {{
+            background: {p['input_bg']};
+            border: 2px solid {p['input_bg']};
+            border-radius: 12px;
+        }}
+        QPlainTextEdit:focus {{
+            border: 2px solid {p['accent']};
+        }}
+    """)
+    shadows = theme_manager.shadow_configs()
+    plain_shadow = BoxShadow(shadows["input_inset"], smooth=True)
+    plain.setGraphicsEffect(plain_shadow)
     g3.addWidget(plain)
 
     char_counter = QtWidgets.QLabel("0 / 500 characters")
