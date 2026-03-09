@@ -18,6 +18,9 @@ class BoxShadow(QtWidgets.QGraphicsEffect):
         self._max_y_offset = 0
         self._border = 0
         self._smooth = smooth
+        self._cache_outside: QtGui.QPixmap | None = None
+        self._cache_inside: QtGui.QPixmap | None = None
+        self._cache_size: QtCore.QSize | None = None
         self.setShadowList(shadow_list)
         self.setBorder(border)
 
@@ -26,9 +29,16 @@ class BoxShadow(QtWidgets.QGraphicsEffect):
     def setShadowList(self, shadow_list: list[dict] | None = None) -> None:
         self._shadow_list = shadow_list or []
         self._set_max_offset()
+        self._invalidate_cache()
 
     def setBorder(self, border: int) -> None:
         self._border = max(0, border)
+        self._invalidate_cache()
+
+    def _invalidate_cache(self) -> None:
+        self._cache_outside = None
+        self._cache_inside = None
+        self._cache_size = None
 
     def necessary_indentation(self) -> tuple[int, int]:
         return self._max_x_offset, self._max_y_offset
@@ -296,18 +306,21 @@ class BoxShadow(QtWidgets.QGraphicsEffect):
 
         painter.setTransform(QtGui.QTransform())
 
-        if self._smooth:
-            outside = self._smooth_outside_shadow()
-            inside = self._smooth_inside_shadow()
-        else:
-            outside = self._outside_shadow()
-            inside = self._inside_shadow()
+        current_size = source.size()
+        if (self._cache_outside is None or self._cache_size != current_size):
+            if self._smooth:
+                self._cache_outside = self._smooth_outside_shadow()
+                self._cache_inside = self._smooth_inside_shadow()
+            else:
+                self._cache_outside = self._outside_shadow()
+                self._cache_inside = self._inside_shadow()
+            self._cache_size = current_size
 
         painter.setPen(QtCore.Qt.PenStyle.NoPen)
-        painter.drawPixmap(x, y, w, h, outside)
+        painter.drawPixmap(x, y, w, h, self._cache_outside)
         painter.drawPixmap(x, y, source)
         painter.drawPixmap(x + self._border, y + self._border,
-                           w - self._border * 2, h - self._border * 2, inside)
+                           w - self._border * 2, h - self._border * 2, self._cache_inside)
         painter.setWorldTransform(restore)
 
 

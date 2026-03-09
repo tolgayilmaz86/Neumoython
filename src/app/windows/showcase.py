@@ -405,9 +405,11 @@ def _build_home_page(main_window) -> QtWidgets.QWidget:
 
     demos = registry.all()
     cols = 3
+    card_frames: list[QFrame] = []
     for i, demo in enumerate(demos):
         card = _make_card(demo, main_window)
         grid.addWidget(card, i // cols, i % cols)
+        card_frames.append(card)
 
     # Fill remainder of last row so cards don't stretch
     remainder = len(demos) % cols
@@ -419,6 +421,26 @@ def _build_home_page(main_window) -> QtWidgets.QWidget:
     grid.setRowStretch(len(demos) // cols + 1, 1)
     scroll.setWidget(grid_widget)
     outer.addWidget(scroll)
+
+    # Single theme_changed connection to update all card icons at once
+    def _on_accent_changed(_theme, cards=card_frames):
+        accent = theme_manager.palette['accent']
+        link_style = explore_link()
+        for wrapper in cards:
+            inner = getattr(wrapper, '_widget', wrapper)
+            name = getattr(inner, '_accent_icon_name', None)
+            if name is None:
+                continue
+            inner._accent_icon_widget.setPixmap(
+                qta.icon(name, color=accent).pixmap(36, 36)
+            )
+            inner._accent_explore.setStyleSheet(link_style)
+
+    theme_manager.theme_changed.connect(_on_accent_changed)
+    page.destroyed.connect(
+        lambda: theme_manager.theme_changed.disconnect(_on_accent_changed)
+    )
+
     return page
 
 
@@ -470,12 +492,10 @@ def _make_card(demo, main_window) -> QtWidgets.QWidget:
     explore.setStyleSheet(explore_link())
     layout.addWidget(explore)
 
-    # Update icon and link colours when accent changes
-    def _on_theme_changed(_theme, iname=icon_name, iw=icon_widget, ex=explore):
-        accent = theme_manager.palette['accent']
-        iw.setPixmap(qta.icon(iname, color=accent).pixmap(36, 36))
-        ex.setStyleSheet(explore_link())
-    theme_manager.theme_changed.connect(_on_theme_changed)
+    # Store refs for batched accent update
+    card._accent_icon_name = icon_name
+    card._accent_icon_widget = icon_widget
+    card._accent_explore = explore
 
     # Wrap in BoxShadowWrapper for neumorphic raised effect
     shadows = theme_manager.shadow_configs()
