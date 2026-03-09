@@ -141,6 +141,17 @@ def _shadow_configs(theme: str) -> dict[str, list[dict]]:
                 {"inside": True, "offset": [-2, -2], "blur": 4,
                  "color": QtGui.QColor(255, 255, 255, 170)},
             ],
+            # Outline fields – outset + inset for prominent border feel
+            "input_outline": [
+                {"outside": True, "offset": [3, 3], "blur": 6,
+                 "color": QtGui.QColor(0, 0, 0, 40)},
+                {"outside": True, "offset": [-3, -3], "blur": 6,
+                 "color": QtGui.QColor(255, 255, 255, 190)},
+                {"inside": True, "offset": [2, 2], "blur": 4,
+                 "color": QtGui.QColor(0, 0, 0, 20)},
+                {"inside": True, "offset": [-2, -2], "blur": 4,
+                 "color": QtGui.QColor(255, 255, 255, 120)},
+            ],
         }
     else:
         return {
@@ -173,6 +184,16 @@ def _shadow_configs(theme: str) -> dict[str, list[dict]]:
                  "color": QtGui.QColor(0, 0, 0, 100)},
                 {"inside": True, "offset": [-2, -2], "blur": 4,
                  "color": QtGui.QColor(255, 255, 255, 25)},
+            ],
+            "input_outline": [
+                {"outside": True, "offset": [3, 3], "blur": 6,
+                 "color": QtGui.QColor(0, 0, 0, 110)},
+                {"outside": True, "offset": [-3, -3], "blur": 6,
+                 "color": QtGui.QColor(255, 255, 255, 25)},
+                {"inside": True, "offset": [2, 2], "blur": 4,
+                 "color": QtGui.QColor(0, 0, 0, 70)},
+                {"inside": True, "offset": [-2, -2], "blur": 4,
+                 "color": QtGui.QColor(255, 255, 255, 15)},
             ],
         }
 
