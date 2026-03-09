@@ -12,6 +12,7 @@ from widgets.progress_widgets import (
 )
 from widgets.registry import registry, WidgetDemo
 from widgets.box_shadow import BoxShadowWrapper
+from widgets.catalog.sliders_demo import _NeuSlider
 from styles.theme_manager import theme_manager
 
 
@@ -78,7 +79,7 @@ def create_page() -> QtWidgets.QWidget:
     # ================================================================
     slider_row = QtWidgets.QHBoxLayout()
     slider_label = _accent_label("Value: 50")
-    slider = QtWidgets.QSlider(Qt.Orientation.Horizontal)
+    slider = _NeuSlider(Qt.Orientation.Horizontal)
     slider.setRange(0, 100)
     slider.setValue(50)
     slider_row.addWidget(QtWidgets.QLabel("Control:"))

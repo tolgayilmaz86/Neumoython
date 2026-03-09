@@ -4,6 +4,7 @@ from PySide6 import QtCore, QtWidgets
 
 from widgets.registry import registry, WidgetDemo
 from widgets.box_shadow import BoxShadowWrapper
+from widgets.catalog.sliders_demo import _NeuSlider
 from styles.theme_manager import theme_manager
 
 
@@ -79,7 +80,7 @@ def create_page() -> QtWidgets.QWidget:
     dspin.setDecimals(2)
     g2.addRow("Double Spin:", dspin)
 
-    slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
+    slider = _NeuSlider(QtCore.Qt.Orientation.Horizontal)
     slider.setRange(0, 100)
     g2.addRow("Slider:", slider)
 
